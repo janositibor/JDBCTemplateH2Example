@@ -15,7 +15,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Build with Maven
-        run: mvn test
+        run: mvn verify
       - uses: actions/upload-artifact@v4
         with:
           name: JDBCTemplateH2Example
