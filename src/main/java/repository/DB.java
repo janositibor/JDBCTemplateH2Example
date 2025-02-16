@@ -1,8 +1,7 @@
-package Repository;
+package repository;
 
 import org.h2.jdbcx.JdbcDataSource;
 import javax.sql.DataSource;
-import java.sql.SQLException;
 
 public class DB {
     private String schema;

@@ -1,9 +1,8 @@
-package Service;
+package service;
 
-import Model.Actor;
-import Model.Movie;
-import Repository.DB;
-import Service.Service;
+import model.Actor;
+import model.Movie;
+import repository.DB;
 import org.assertj.core.groups.Tuple;
 import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.BeforeEach;

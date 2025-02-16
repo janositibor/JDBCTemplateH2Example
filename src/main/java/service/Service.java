@@ -1,26 +1,21 @@
-package Service;
+package service;
 
-import Model.Actor;
-import Repository.*;
-import Model.Movie;
+import model.Actor;
+import repository.*;
+import model.Movie;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public class Service {
-    private DB db;
-
     private ActorRepository actorRepository;
     private MovieRepository movieRepository;
     private ActorMovieRepository actorMovieRepository;
-    private RatingRepository ratingRepository;
 
     public Service(DB db) {
-        this.db = db;
         actorRepository=new ActorRepository(db.getDataSource());
         movieRepository=new MovieRepository(db.getDataSource());
         actorMovieRepository=new ActorMovieRepository(db.getDataSource());
-        ratingRepository=new RatingRepository(db.getDataSource());
     }
 
     public Actor saveActor(String name, int yob){
@@ -68,7 +63,7 @@ public class Service {
             if(!containsActor(actorToCheck)){
                 saveActor(actorToCheck.getName(),actorToCheck.getYob());
             }
-            Actor actor=actorRepository.findActor(actorToCheck).orElseThrow(()->new IllegalStateException("Can't found actor!"));;
+            Actor actor=actorRepository.findActor(actorToCheck).orElseThrow(()->new IllegalStateException("Can't found actor!"));
             actorMovieRepository.save(actor,movie);
         }
     }

@@ -1,9 +1,9 @@
-package Repository;
+package repository;
 
-import Model.Actor;
-import Model.ActorRowMapper;
-import Model.Movie;
-import Model.MovieRowMapper;
+import model.Actor;
+import model.ActorRowMapper;
+import model.Movie;
+import model.MovieRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;

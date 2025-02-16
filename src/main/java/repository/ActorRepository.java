@@ -1,7 +1,7 @@
-package Repository;
+package repository;
 
-import Model.Actor;
-import Model.ActorRowMapper;
+import model.Actor;
+import model.ActorRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -18,32 +18,44 @@ public class ActorRepository{
     public ActorRepository(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
-    public Optional<Long> saveBasicAndGetGeneratedKey(Actor actor){
+    public Optional<Long> saveBasicAndGetGeneratedKey(Actor actor) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(con -> preparedStatementForInsert(con,actor), keyHolder);
-        return Optional.ofNullable(keyHolder.getKey().longValue());
-    }
-    private PreparedStatement preparedStatementForInsert(Connection con, Actor actor) throws SQLException {
-        String sql = "insert into actors(name,yob) values (?,?)";
-        PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-        ps.setString(1, actor.getName());
-        ps.setInt(2, actor.getYob());
-        return ps;
+        Number key;
+
+        jdbcTemplate.update(new PreparedStatementCreator() {
+                                @Override
+                                public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+                                    PreparedStatement ps =
+                                            connection.prepareStatement("insert into actors(name,yob) values (?,?)",
+                                                    Statement.RETURN_GENERATED_KEYS);
+                                    ps.setString(1, actor.getName());
+                                    ps.setInt(2, actor.getYob());
+                                    return ps;
+                                }
+                            }, keyHolder
+        );
+        key=keyHolder.getKey();
+        if(key!=null){
+            return Optional.ofNullable(key.longValue());
+        }
+        else{
+            throw new IllegalArgumentException("Error with actor saving!");
+        }
     }
 
     public void updateActor(Actor actorToUpdate, Actor pattern){
         String sql = "UPDATE actors SET name = ?, yob=?  WHERE id = ?";
-        int rowsAffected = jdbcTemplate.update(sql, pattern.getName(), pattern.getYob(),actorToUpdate.getId());
+        jdbcTemplate.update(sql, pattern.getName(), pattern.getYob(),actorToUpdate.getId());
     }
     public void deleteActor(Long id){
         String sql = "DELETE FROM actors WHERE id = ?";
-        int rowsAffected = jdbcTemplate.update(sql, id);
+        jdbcTemplate.update(sql, id);
     }
     public Optional<Actor> findActor(Actor actor) {
         List<Actor> actors=jdbcTemplate.query("select id, name,yob from actors where name LIKE ? and yob=?"
                 , new ActorRowMapper()
                 ,actor.getName(),actor.getYob());
-        if(actors.size()<1){
+        if(actors.isEmpty()){
             return Optional.empty();
         }
         return Optional.of(actors.get(0));

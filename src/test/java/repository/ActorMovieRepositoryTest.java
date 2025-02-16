@@ -1,11 +1,7 @@
-package Repository;
+package repository;
 
-import Model.Actor;
-import Model.Movie;
-import Repository.ActorMovieRepository;
-import Repository.ActorRepository;
-import Repository.DB;
-import Repository.MovieRepository;
+import model.Actor;
+import model.Movie;
 import org.assertj.core.groups.Tuple;
 import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.BeforeEach;

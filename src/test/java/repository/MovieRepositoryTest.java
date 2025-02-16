@@ -1,8 +1,6 @@
-package Repository;
+package repository;
 
-import Model.Movie;
-import Repository.DB;
-import Repository.MovieRepository;
+import model.Movie;
 import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

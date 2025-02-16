@@ -1,6 +1,6 @@
-package Repository;
+package repository;
 
-import Model.Movie;
+import model.Movie;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
